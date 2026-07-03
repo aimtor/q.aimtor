@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aimtor — Learn. Grow. Achieve.</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      fontFamily: {
+        sans: ['Plus Jakarta Sans', 'sans-serif'],
+        display: ['Poppins', 'sans-serif'],
+      },
+      colors: {
+        brand: {
+          50: '#eef6ff', 100: '#d9eaff', 200: '#bcd9ff', 300: '#8ec0ff',
+          400: '#599cff', 500: '#3478f6', 600: '#1f5deb', 700: '#1849d4',
+          800: '#1a3fab', 900: '#1b3a87',
+        },
+        mint: {
+          400: '#34d399', 500: '#10b981', 600: '#059669',
+        },
+        amber: {
+          400: '#fbbf24', 500: '#f59e0b',
+        }
+      },
+      animation: {
+        'float': 'float 6s ease-in-out infinite',
+        'fade-up': 'fadeUp 0.6s ease forwards',
+        'pulse-soft': 'pulseSoft 2.5s ease-in-out infinite',
+      },
+      keyframes: {
+        float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-14px)' } },
+        fadeUp: { '0%': { opacity: '0', transform: 'translateY(24px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } },
+        pulseSoft: { '0%,100%': { opacity: '1' }, '50%': { opacity: '.6' } },
+      }
+    }
+  }
+}
+</script>
+<style>
+  * { scroll-behavior: smooth; }
+  body { font-family: 'Plus Jakarta Sans', sans-serif; }
+  h1,h2,h3,h4,.font-display { font-family: 'Poppins', sans-serif; }
+  .glass { background: rgba(255,255,255,.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); }
+  .glass-dark { background: rgba(17,24,39,.6); backdrop-filter: blur(14px); }
+  .gradient-text { background: linear-gradient(135deg,#3478f6 0%,#10b981 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .gradient-brand { background: linear-gradient(135deg,#3478f6 0%,#1849d4 100%); }
+  .gradient-hero { background: linear-gradient(160deg,#eef6ff 0%,#f0fdf9 50%,#fffbeb 100%); }
+  .card-hover { transition: all .35s cubic-bezier(.4,0,.2,1); }
+  .card-hover:hover { transform: translateY(-8px); box-shadow: 0 24px 48px -12px rgba(31,93,235,.22); }
+  .reveal { opacity: 0; transform: translateY(30px); transition: all .7s cubic-bezier(.16,1,.3,1); }
+  .reveal.show { opacity: 1; transform: translateY(0); }
+  ::-webkit-scrollbar { width: 10px; }
+  ::-webkit-scrollbar-track { background: #f1f5f9; }
+  ::-webkit-scrollbar-thumb { background: #93c5fd; border-radius: 8px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3478f6; }
+  .play-overlay { background: linear-gradient(0deg,rgba(0,0,0,.55),transparent 60%); }
+  .nav-link { position: relative; }
+  .nav-link::after { content:''; position:absolute; left:0; bottom:-4px; width:0; height:2px; background:#3478f6; transition:width .3s; }
+  .nav-link:hover::after { width:100%; }
+  .chat-scroll::-webkit-scrollbar { width: 6px; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+<!-- ============ NAVBAR ============ -->
+<header id="navbar" class="fixed top-0 inset-x-0 z-50 glass border-b border-white/40 transition-all duration-300">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16">
+      <a href="#home" class="flex items-center gap-2">
+        <div class="w-10 h-10 gradient-brand rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30">
+          <i class="fas fa-graduation-cap text-white text-lg"></i>
+        </div>
+        <span class="text-2xl font-extrabold font-display gradient-text">Aimtor</span>
+      </a>
+      <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
+        <a href="#videos" class="nav-link hover:text-brand-600">Videos</a>
+        <a href="#notes" class="nav-link hover:text-brand-600">Notes</a>
+        <a href="#suggestions" class="nav-link hover:text-brand-600">Suggestions</a>
+        <a href="#routine" class="nav-link hover:text-brand-600">Routine</a>
+        <a href="#ai" class="nav-link hover:text-brand-600">AI Tutor</a>
+        <a href="#features" class="nav-link hover:text-brand-600">More</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button class="hidden sm:block px-4 py-2 text-sm font-semibold text-brand-600 hover:text-brand-700">Log in</button>
+        <button class="px-5 py-2.5 gradient-brand text-white text-sm font-semibold rounded-xl shadow-lg shadow-brand-500/30 hover:shadow-brand-500/50 hover:scale-105 transition">Sign up free</button>
+        <button id="menuBtn" class="lg:hidden w-10 h-10 flex items-center justify-center text-slate-700 text-xl"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+  </nav>
+  <!-- mobile menu -->
+  <div id="mobileMenu" class="hidden lg:hidden glass border-t border-white/40 px-6 py-4 space-y-3 text-sm font-semibold text-slate-700">
+    <a href="#videos" class="block py-1">Videos</a>
+    <a href="#notes" class="block py-1">Notes</a>
+    <a href="#suggestions" class="block py-1">Suggestions</a>
+    <a href="#routine" class="block py-1">Routine</a>
+    <a href="#ai" class="block py-1">AI Tutor</a>
+    <a href="#features" class="block py-1">More</a>
+  </div>
+</header>
+
+<!-- ============ HERO ============ -->
+<section id="home" class="gradient-hero relative overflow-hidden pt-28 pb-20 lg:pt-36 lg:pb-28">
+  <div class="absolute top-20 -left-20 w-72 h-72 bg-brand-300/30 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-0 right-0 w-96 h-96 bg-mint-400/20 rounded-full blur-3xl"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="reveal">
+        <span class="inline-flex items-center gap-2 px-4 py-1.5 bg-white rounded-full text-xs font-bold text-brand-600 shadow-sm mb-6">
+          <span class="w-2 h-2 bg-mint-500 rounded-full animate-pulse-soft"></span>
+          #1 Learning Platform for Students
+        </span>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold font-display leading-tight text-slate-900">
+          Learn smarter with <span class="gradient-text">Aimtor</span>
+        </h1>
+        <p class="mt-6 text-lg text-slate-600 max-w-lg leading-relaxed">
+          Your all-in-one education hub — watch expert video lessons, grab ready-made notes, get exam suggestions, build study routines, and ask our AI Tutor anything, anytime.
+        </p>
+        <div class="mt-8 flex flex-wrap gap-4">
+          <a href="#videos" class="px-7 py-3.5 gradient-brand text-white font-semibold rounded-xl shadow-lg shadow-brand-500/30 hover:scale-105 transition flex items-center gap-2">
+            <i class="fas fa-play"></i> Start Learning
+          </a>
+          <a href="#ai" class="px-7 py-3.5 bg-white text-slate-700 font-semibold rounded-xl shadow-sm hover:shadow-md border border-slate-100 transition flex items-center gap-2">
+            <i class="fas fa-robot text-brand-500"></i> Try AI Tutor
+          </a>
+        </div>
+        <div class="mt-10 flex items-center gap-8">
+          <div><p class="text-2xl font-extrabold text-slate-900">50K+</p><p class="text-sm text-slate-500">Students</p></div>
+          <div class="w-px h-10 bg-slate-200"></div>
+          <div><p class="text-2xl font-extrabold text-slate-900">12K+</p><p class="text-sm text-slate-500">Video Lessons</p></div>
+          <div class="w-px h-10 bg-slate-200"></div>
+          <div><p class="text-2xl font-extrabold text-slate-900">4.9★</p><p class="text-sm text-slate-500">Rating</p></div>
+        </div>
+      </div>
+      <div class="relative reveal">
+        <div class="relative bg-white rounded-3xl shadow-2xl shadow-brand-500/20 p-3 animate-float">
+          <div class="rounded-2xl overflow-hidden relative aspect-video bg-gradient-to-br from-brand-500 to-mint-500">
+            <div class="absolute inset-0 flex items-center justify-center">
+              <button class="w-20 h-20 bg-white/90 rounded-full flex items-center justify-center shadow-xl hover:scale-110 transition">
+                <i class="fas fa-play text-brand-600 text-2xl ml-1"></i>
+              </button>
+            </div>
+            <div class="absolute bottom-4 left-4 right-4 flex items-center gap-3 text-white text-sm">
+              <span class="px-2 py-1 bg-black/40 rounded">12:45</span>
+              <div class="flex-1 h-1 bg-white/30 rounded-full"><div class="w-1/3 h-full bg-white rounded-full"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="absolute -top-5 -right-5 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3 animate-float" style="animation-delay:.8s">
+          <div class="w-11 h-11 bg-amber-100 rounded-xl flex items-center justify-center"><i class="fas fa-trophy text-amber-500"></i></div>
+          <div><p class="text-xs text-slate-500">Achievement</p><p class="font-bold text-slate-900 text-sm">Top Scorer</p></div>
+        </div>
+        <div class="absolute -bottom-5 -left-5 bg-white rounded-2xl shadow-xl p-4 flex items-center gap-3 animate-float" style="animation-delay:1.4s">
+          <div class="w-11 h-11 bg-mint-100 rounded-xl flex items-center justify-center"><i class="fas fa-robot text-mint-500"></i></div>
+          <div><p class="text-xs text-slate-500">AI Tutor</p><p class="font-bold text-slate-900 text-sm">Online 24/7</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FEATURE STRIP ============ -->
+<section class="bg-white py-8 border-y border-slate-100">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="flex items-center gap-3"><i class="fas fa-video text-brand-500 text-2xl"></i><div><p class="font-bold text-slate-900">HD Lessons</p><p class="text-xs text-slate-500">Anytime access</p></div></div>
+    <div class="flex items-center gap-3"><i class="fas fa-book-open text-mint-500 text-2xl"></i><div><p class="font-bold text-slate-900">Free Notes</p><p class="text-xs text-slate-500">Download PDFs</p></div></div>
+    <div class="flex items-center gap-3"><i class="fas fa-lightbulb text-amber-500 text-2xl"></i><div><p class="font-bold text-slate-900">Exam Tips</p><p class="text-xs text-slate-500">Smart suggestions</p></div></div>
+    <div class="flex items-center gap-3"><i class="fas fa-brain text-purple-500 text-2xl"></i><div><p class="font-bold text-slate-900">AI Tutor</p><p class="text-xs text-slate-500">Instant answers</p></div></div>
+  </div>
+</section>
+
+<!-- ============ VIDEO LIBRARY ============ -->
+<section id="videos" class="py-20 lg:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 reveal">
+      <span class="text-sm font-bold text-brand-600 uppercase tracking-wider">Video Library</span>
+      <h2 class="text-3xl lg:text-4xl font-extrabold font-display text-slate-900 mt-2">Trending Lessons</h2>
+      <p class="text-slate-500 mt-3 max-w-xl mx-auto">Curated, high-quality video lessons from top educators across every subject.</p>
+    </div>
+
+    <!-- category pills -->
+    <div id="catPills" class="flex flex-wrap justify-center gap-3 mb-10 reveal">
+      <button data-cat="all" class="cat-pill px-5 py-2 rounded-full text-sm font-semibold gradient-brand text-white shadow-md">All</button>
+      <button data-cat="math" class="cat-pill px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:border-brand-300">Mathematics</button>
+      <button data-cat="science" class="cat-pill px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:border-brand-300">Science</button>
+      <button data-cat="english" class="cat-pill px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:border-brand-300">English</button>
+      <button data-cat="ict" class="cat-pill px-5 py-2 rounded-full text-sm font-semibold bg-white text-slate-600 border border-slate-200 hover:border-brand-300">ICT</button>
+    </div>
+
+    <div id="videoGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+  </div>
+</section>
+
+<!-- ============ NOTES ============ -->
+<section id="notes" class="py-20 lg:py-28 bg-gradient-to-b from-white to-brand-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid lg:grid-cols-2 gap-12 items-center">
+      <div class="reveal">
+        <span class="text-sm font-bold text-mint-600 uppercase tracking-wider">Study Notes</span>
+        <h2 class="text-3xl lg:text-4xl font-extrabold font-display text-slate-900 mt-2">Ready-made notes for every chapter</h2>
+        <p class="text-slate-500 mt-4 leading-relaxed">Skip the stress of summarizing. Our expert notes are concise, exam-focused, and downloadable as PDFs — perfect for last-minute revision.</p>
+        <ul class="mt-6 space-y-3">
+          <li class="flex items-center gap-3 text-slate-700"><i class="fas fa-check-circle text-mint-500"></i> Chapter-wise organized notes</li>
+          <li class="flex items-center gap-3 text-slate-700"><i class="fas fa-check-circle text-mint-500"></i> Highlighted key points & formulas</li>
+          <li class="flex items-center gap-3 text-slate-700"><i class="fas fa-check-circle text-mint-500"></i> Downloadable & printable PDFs</li>
+        </ul>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-5 reveal">
+        <div class="bg-white rounded-2xl p-5 shadow-lg card-hover border border-slate-100">
+          <div class="w-12 h-12 bg-brand-100 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-square-root-variable text-brand-600 text-xl"></i></div>
+          <h4 class="font-bold text-slate-900">Algebra Basics</h4>
+          <p class="text-xs text-slate-500 mt-1">Math • 24 pages</p>
+          <button class="mt-4 w-full py-2 bg-brand-50 text-brand-600 text-sm font-semibold rounded-lg hover:bg-brand-100 transition"><i class="fas fa-download mr-1"></i> Download</button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-lg card-hover border border-slate-100 sm:mt-8">
+          <div class="w-12 h-12 bg-mint-100 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-atom text-mint-600 text-xl"></i></div>
+          <h4 class="font-bold text-slate-900">Atomic Structure</h4>
+          <p class="text-xs text-slate-500 mt-1">Chemistry • 18 pages</p>
+          <button class="mt-4 w-full py-2 bg-mint-50 text-mint-600 text-sm font-semibold rounded-lg hover:bg-mint-100 transition"><i class="fas fa-download mr-1"></i> Download</button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-lg card-hover border border-slate-100">
+          <div class="w-12 h-12 bg-amber-100 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-pen-fancy text-amber-500 text-xl"></i></div>
+          <h4 class="font-bold text-slate-900">Essay Writing</h4>
+          <p class="text-xs text-slate-500 mt-1">English • 12 pages</p>
+          <button class="mt-4 w-full py-2 bg-amber-50 text-amber-600 text-sm font-semibold rounded-lg hover:bg-amber-100 transition"><i class="fas fa-download mr-1"></i> Download</button>
+        </div>
+        <div class="bg-white rounded-2xl p-5 shadow-lg card-hover border border-slate-100 sm:mt-8">
+          <div class="w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center mb-4"><i class="fas fa-code text-purple-600 text-xl"></i></div>
+          <h4 class="font-bold text-slate-900">Intro to Coding</h4>
+          <p class="text-xs text-slate-500 mt-1">ICT • 30 pages</p>
+          <button class="mt-4 w-full py-2 bg-purple-50 text-purple-600 text-sm font-semibold rounded-lg hover:bg-purple-100 transition"><i class="fas fa-download mr-1"></i> Download</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ SUGGESTIONS ============ -->
+<section id="suggestions" class="py-20 lg:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 reveal">
+      <span class="text-sm font-bold text-amber-500 uppercase tracking-wider">Exam Suggestions</span>
+      <h2 class="text-3xl lg:text-4xl font-extrabold font-display text-slate-900 mt-2">Score higher with smart suggestions</h2>
+      <p class="text-slate-500 mt-3 max-w-xl mx-auto">Important questions, common topics, and exam strategies — analyzed from years of past papers.</p>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="reveal bg-white rounded-2xl p-7 shadow-lg card-hover border border-slate-100">
+        <div class="w-14 h-14 gradient-brand rounded-2xl flex items-center justify-center mb-5"><i class="fas fa-star text-white text-xl"></i></div>
+        <h3 class="text-xl font-bold text-slate-900">Important Questions</h3>
+        <p class="text-slate-500 mt-2 text-sm">Most repeated and high-mark questions, picked from 10 years of exams.</p>
+        <span class="inline-block mt-4 text-xs font-bold text-brand-600 bg-brand-50 px-3 py-1 rounded-full">320+ questions</span>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-7 shadow-lg card-hover border border-slate-100">
+        <div class="w-14 h-14 bg-mint-500 rounded-2xl flex items-center justify-center mb-5"><i class="fas fa-bullseye text-white text-xl"></i></div>
+        <h3 class="text-xl font-bold text-slate-900">Common Topics</h3>
+        <p class="text-slate-500 mt-2 text-sm">Focus on what matters — chapters most likely to appear in your exam.</p>
+        <span class="inline-block mt-4 text-xs font-bold text-mint-600 bg-mint-50 px-3 py-1 rounded-full">Updated 2026</span>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-7 shadow-lg card-hover border border-slate-100">
+        <div class="w-14 h-14 bg-amber-500 rounded-2xl flex items-center justify-center mb-5"><i class="fas fa-chess-knight text-white text-xl"></i></div>
+        <h3 class="text-xl font-bold text-slate-900">Exam Strategy</h3>
+        <p class="text-slate-500 mt-2 text-sm">Time management, marking tips, and how to answer for maximum marks.</p>
+        <span class="inline-block mt-4 text-xs font-bold text-amber-600 bg-amber-50 px-3 py-1 rounded-full">Pro tips</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ROUTINE BUILDER ============ -->
+<section id="routine" class="py-20 lg:py-28 bg-slate-900 text-white relative overflow-hidden">
+  <div class="absolute top-0 right-0 w-96 h-96 bg-brand-500/20 rounded-full blur-3xl"></div>
+  <div class="absolute bottom-0 left-0 w-80 h-80 bg-mint-500/20 rounded-full blur-3xl"></div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
+    <div class="text-center mb-12 reveal">
+      <span class="text-sm font-bold text-mint-400 uppercase tracking-wider">Study Routine</span>
+      <h2 class="text-3xl lg:text-4xl font-extrabold font-display mt-2">Build your perfect study routine</h2>
+      <p class="text-slate-300 mt-3 max-w-xl mx-auto">Add subjects, set times, and stay consistent. Your personalized weekly planner.</p>
+    </div>
+    <div class="grid lg:grid-cols-3 gap-8">
+      <!-- builder -->
+      <div class="lg:col-span-1 glass-dark rounded-2xl p-6 border border-white/10 reveal">
+        <h3 class="font-bold text-lg mb-4 flex items-center gap-2"><i class="fas fa-plus-circle text-mint-400"></i> Add Task</h3>
+        <div class="space-y-3">
+          <input id="rSubject" type="text" placeholder="Subject (e.g. Physics)" class="w-full px-4 py-2.5 bg-white/10 rounded-lg border border-white/10 placeholder-slate-400 text-sm focus:outline-none focus:border-brand-400">
+          <select id="rDay" class="w-full px-4 py-2.5 bg-white/10 rounded-lg border border-white/10 text-sm focus:outline-none focus:border-brand-400">
+            <option class="text-slate-900">Monday</option><option class="text-slate-900">Tuesday</option>
+            <option class="text-slate-900">Wednesday</option><option class="text-slate-900">Thursday</option>
+            <option class="text-slate-900">Friday</option><option class="text-slate-900">Saturday</option>
+            <option class="text-slate-900">Sunday</option>
+          </select>
+          <input id="rTime" type="time" class="w-full px-4 py-2.5 bg-white/10 rounded-lg border border-white/10 text-sm focus:outline-none focus:border-brand-400" value="16:00">
+          <button id="addRoutine" class="w-full py-2.5 gradient-brand rounded-lg font-semibold text-sm hover:scale-105 transition">Add to Routine</button>
+        </div>
+      </div>
+      <!-- list -->
+      <div class="lg:col-span-2 glass-dark rounded-2xl p-6 border border-white/10 reveal">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-bold text-lg flex items-center gap-2"><i class="fas fa-calendar-week text-brand-400"></i> My Weekly Plan</h3>
+          <span id="routineCount" class="text-xs bg-white/10 px-3 py-1 rounded-full">0 tasks</span>
+        </div>
+        <div id="routineList" class="space-y-3 max-h-80 overflow-y-auto chat-scroll pr-1">
+          <p id="emptyRoutine" class="text-slate-400 text-sm text-center py-10"><i class="fas fa-inbox text-3xl block mb-2 opacity-50"></i>No tasks yet. Add your first study session!</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ AI TUTOR ============ -->
+<section id="ai" class="py-20 lg:py-28 bg-gradient-to-b from-brand-50 to-white">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 reveal">
+      <span class="text-sm font-bold text-purple-600 uppercase tracking-wider">AI Tutor</span>
+      <h2 class="text-3xl lg:text-4xl font-extrabold font-display text-slate-900 mt-2">Ask Aimtor AI anything</h2>
+      <p class="text-slate-500 mt-3 max-w-xl mx-auto">Stuck on a problem? Get instant explanations, summaries, and study help — 24/7.</p>
+    </div>
+    <div class="bg-white rounded-3xl shadow-2xl shadow-brand-500/10 border border-slate-100 overflow-hidden reveal">
+      <div class="flex items-center gap-3 px-6 py-4 gradient-brand text-white">
+        <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center"><i class="fas fa-robot"></i></div>
+        <div><p class="font-bold">Aimtor AI Tutor</p><p class="text-xs text-white/80 flex items-center gap-1"><span class="w-2 h-2 bg-mint-400 rounded-full"></span> Online</p></div>
+      </div>
+      <div id="chatBox" class="p-6 h-80 overflow-y-auto chat-scroll space-y-4 bg-slate-50">
+        <div class="flex gap-3">
+          <div class="w-8 h-8 gradient-brand rounded-full flex items-center justify-center text-white text-xs flex-shrink-0"><i class="fas fa-robot"></i></div>
+          <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[80%] text-sm text-slate-700">
+            Hi! I'm your AI Tutor 🤖 Ask me to explain a concept, summarize a chapter, or solve a problem. Try one of the quick prompts below!
+          </div>
+        </div>
+      </div>
+      <div class="px-6 py-3 bg-white border-t border-slate-100 flex flex-wrap gap-2">
+        <button class="quick-prompt text-xs px-3 py-1.5 bg-brand-50 text-brand-600 rounded-full hover:bg-brand-100 transition">Explain photosynthesis</button>
+        <button class="quick-prompt text-xs px-3 py-1.5 bg-mint-50 text-mint-600 rounded-full hover:bg-mint-100 transition">Solve x² - 5x + 6 = 0</button>
+        <button class="quick-prompt text-xs px-3 py-1.5 bg-amber-50 text-amber-600 rounded-full hover:bg-amber-100 transition">Tips for exam stress</button>
+      </div>
+      <div class="px-6 py-4 bg-white border-t border-slate-100 flex gap-3">
+        <input id="chatInput" type="text" placeholder="Type your question..." class="flex-1 px-4 py-3 bg-slate-100 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-brand-300">
+        <button id="sendChat" class="px-5 py-3 gradient-brand text-white rounded-xl hover:scale-105 transition"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+    <p class="text-center text-xs text-slate-400 mt-4">Demo AI — responses are simulated for this preview.</p>
+  </div>
+</section>
+
+<!-- ============ MORE FEATURES ============ -->
+<section id="features" class="py-20 lg:py-28">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12 reveal">
+      <span class="text-sm font-bold text-brand-600 uppercase tracking-wider">And Much More</span>
+      <h2 class="text-3xl lg:text-4xl font-extrabold font-display text-slate-900 mt-2">Everything a student needs</h2>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div class="reveal bg-white rounded-2xl p-6 shadow-lg card-hover border border-slate-100 text-center">
+        <div class="w-14 h-14 mx-auto bg-brand-100 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-clipboard-question text-brand-600 text-xl"></i></div>
+        <h3 class="font-bold text-slate-900">Quizzes & Tests</h3>
+        <p class="text-slate-500 text-sm mt-2">Self-assess with topic-wise quizzes and instant scoring.</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-6 shadow-lg card-hover border border-slate-100 text-center">
+        <div class="w-14 h-14 mx-auto bg-mint-100 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-users text-mint-600 text-xl"></i></div>
+        <h3 class="font-bold text-slate-900">Study Groups</h3>
+        <p class="text-slate-500 text-sm mt-2">Join peers, discuss doubts, and learn together.</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-6 shadow-lg card-hover border border-slate-100 text-center">
+        <div class="w-14 h-14 mx-auto bg-amber-100 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-chart-line text-amber-500 text-xl"></i></div>
+        <h3 class="font-bold text-slate-900">Progress Tracking</h3>
+        <p class="text-slate-500 text-sm mt-2">Visualize your learning journey and stay motivated.</p>
+      </div>
+      <div class="reveal bg-white rounded-2xl p-6 shadow-lg card-hover border border-slate-100 text-center">
+        <div class="w-14 h-14 mx-auto bg-purple-100 rounded-2xl flex items-center justify-center mb-4"><i class="fas fa-certificate text-purple-600 text-xl"></i></div>
+        <h3 class="font-bold text-slate-900">Certificates</h3>
+        <p class="text-slate-500 text-sm mt-2">Earn certificates as you complete courses.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CTA ============ -->
+<section class="py-16">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="gradient-brand rounded-3xl p-10 lg:p-14 text-center text-white relative overflow-hidden reveal">
+      <div class="absolute -top-10 -right-10 w-48 h-48 bg-white/10 rounded-full"></div>
+      <div class="absolute -bottom-12 -left-12 w-56 h-56 bg-white/10 rounded-full"></div>
+      <div class="relative">
+        <h2 class="text-3xl lg:text-4xl font-extrabold font-display">Ready to ace your exams?</h2>
+        <p class="text-white/90 mt-3 max-w-xl mx-auto">Join 50,000+ students learning smarter with Aimtor. It's free to start.</p>
+        <button class="mt-8 px-8 py-4 bg-white text-brand-600 font-bold rounded-xl shadow-lg hover:scale-105 transition">Create Free Account</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-slate-900 text-slate-300 pt-16 pb-8">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-10">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-10 h-10 gradient-brand rounded-xl flex items-center justify-center"><i class="fas fa-graduation-cap text-white"></i></div>
+          <span class="text-2xl font-extrabold font-display text-white">Aimtor</span>
+        </div>
+        <p class="text-sm text-slate-400 leading-relaxed">Learn. Grow. Achieve. The all-in-one education platform empowering students everywhere.</p>
+        <div class="flex gap-3 mt-5">
+          <a href="#" class="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-brand-500 transition"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-brand-500 transition"><i class="fab fa-youtube"></i></a>
+          <a href="#" class="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-brand-500 transition"><i class="fab fa-instagram"></i></a>
+          <a href="#" class="w-9 h-9 bg-white/10 rounded-lg flex items-center justify-center hover:bg-brand-500 transition"><i class="fab fa-x-twitter"></i></a>
+        </div>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-4">Learn</h4>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li><a href="#videos" class="hover:text-white">Video Lessons</a></li>
+          <li><a href="#notes" class="hover:text-white">Study Notes</a></li>
+          <li><a href="#suggestions" class="hover:text-white">Exam Suggestions</a></li>
+          <li><a href="#features" class="hover:text-white">Quizzes</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-4">Tools</h4>
+        <ul class="space-y-2 text-sm text-slate-400">
+          <li><a href="#routine" class="hover:text-white">Routine Builder</a></li>
+          <li><a href="#ai" class="hover:text-white">AI Tutor</a></li>
+          <li><a href="#features" class="hover:text-white">Progress Tracker</a></li>
+          <li><a href="#features" class="hover:text-white">Certificates</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4 class="font-bold text-white mb-4">Stay Updated</h4>
+        <p class="text-sm text-slate-400 mb-3">Get study tips and new lessons in your inbox.</p>
+        <div class="flex gap-2">
+          <input type="email" placeholder="Your email" class="flex-1 px-3 py-2 bg-white/10 rounded-lg text-sm placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-400">
+          <button class="px-4 py-2 gradient-brand rounded-lg text-white text-sm font-semibold">Join</button>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-white/10 mt-12 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-sm text-slate-400">
+      <p>© 2026 Aimtor. All rights reserved.</p>
+      <div class="flex gap-6"><a href="#" class="hover:text-white">Privacy</a><a href="#" class="hover:text-white">Terms</a><a href="#" class="hover:text-white">Contact</a></div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ===== Video data ===== */
+const videos = [
+  { cat:'math', title:'Mastering Quadratic Equations', tutor:'Dr. Sarah Khan', duration:'15:20', views:'42K', level:'Class 9-10', grad:'from-blue-500 to-indigo-600', icon:'fa-square-root-variable' },
+  { cat:'science', title:'Cell Biology Made Simple', tutor:'Prof. Imran Ali', duration:'22:10', views:'38K', level:'Biology', grad:'from-emerald-500 to-teal-600', icon:'fa-dna' },
+  { cat:'english', title:'Grammar: Tenses Explained', tutor:'Ms. Nadia Rahman', duration:'12:45', views:'55K', level:'English', grad:'from-amber-500 to-orange-600', icon:'fa-book' },
+  { cat:'ict', title:'Python for Beginners', tutor:'Mr. Tanvir Hasan', duration:'28:30', views:'61K', level:'ICT', grad:'from-purple-500 to-fuchsia-600', icon:'fa-code' },
+  { cat:'math', title:'Trigonometry Fundamentals', tutor:'Dr. Sarah Khan', duration:'19:05', views:'29K', level:'Class 9-10', grad:'from-cyan-500 to-blue-600', icon:'fa-compass-drafting' },
+  { cat:'science', title:'Newton\'s Laws of Motion', tutor:'Prof. Karim Uddin', duration:'17:50', views:'47K', level:'Physics', grad:'from-rose-500 to-pink-600', icon:'fa-atom' },
+  { cat:'english', title:'Writing Powerful Essays', tutor:'Ms. Nadia Rahman', duration:'14:30', views:'33K', level:'English', grad:'from-lime-500 to-green-600', icon:'fa-pen-fancy' },
+  { cat:'ict', title:'Database & SQL Basics', tutor:'Mr. Tanvir Hasan', duration:'24:15', views:'21K', level:'ICT', grad:'from-violet-500 to-purple-600', icon:'fa-database' },
+  { cat:'math', title:'Geometry: Circles & Angles', tutor:'Dr. Sarah Khan', duration:'16:40', views:'25K', level:'Class 9-10', grad:'from-sky-500 to-indigo-600', icon:'fa-circle-notch' },
+];
+
+const grid = document.getElementById('videoGrid');
+function renderVideos(cat='all'){
+  const list = cat==='all' ? videos : videos.filter(v=>v.cat===cat);
+  grid.innerHTML = list.map(v=>`
+    <article class="bg-white rounded-2xl overflow-hidden shadow-lg card-hover border border-slate-100">
+      <div class="relative aspect-video bg-gradient-to-br ${v.grad} group cursor-pointer">
+        <div class="absolute inset-0 flex items-center justify-center text-white/20 text-6xl"><i class="fas ${v.icon}"></i></div>
+        <div class="absolute inset-0 play-overlay opacity-0 group-hover:opacity-100 transition flex items-center justify-center">
+          <div class="w-16 h-16 bg-white rounded-full flex items-center justify-center shadow-xl scale-90 group-hover:scale-100 transition"><i class="fas fa-play text-brand-600 text-xl ml-1"></i></div>
+        </div>
+        <span class="absolute bottom-3 right-3 px-2 py-0.5 bg-black/60 text-white text-xs rounded">${v.duration}</span>
+        <span class="absolute top-3 left-3 px-2.5 py-1 bg-white/90 text-slate-700 text-xs font-bold rounded-full">${v.level}</span>
+      </div>
+      <div class="p-5">
+        <h3 class="font-bold text-slate-900 leading-snug line-clamp-2">${v.title}</h3>
+        <div class="flex items-center justify-between mt-3 text-sm text-slate-500">
+          <span class="flex items-center gap-2"><i class="fas fa-user-circle text-brand-400"></i> ${v.tutor}</span>
+          <span class="flex items-center gap-1 text-xs"><i class="fas fa-eye"></i> ${v.views}</span>
+        </div>
+      </div>
+    </article>`).join('');
+}
+renderVideos();
+
+document.querySelectorAll('.cat-pill').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.cat-pill').forEach(b=>{
+      b.classList.remove('gradient-brand','text-white','shadow-md');
+      b.classList.add('bg-white','text-slate-600','border','border-slate-200');
+    });
+    btn.classList.add('gradient-brand','text-white','shadow-md');
+    btn.classList.remove('bg-white','text-slate-600','border','border-slate-200');
+    renderVideos(btn.dataset.cat);
+  });
+});
+
+/* ===== Routine builder ===== */
+let routines = [];
+const routineList = document.getElementById('routineList');
+const emptyRoutine = document.getElementById('emptyRoutine');
+const routineCount = document.getElementById('routineCount');
+const colors = ['brand','mint','amber','purple'];
+
+document.getElementById('addRoutine').addEventListener('click',()=>{
+  const subject = document.getElementById('rSubject').value.trim();
+  const day = document.getElementById('rDay').value;
+  const time = document.getElementById('rTime').value;
+  if(!subject){ document.getElementById('rSubject').focus(); return; }
+  routines.push({subject,day,time,id:Date.now(),color:colors[routines.length%colors.length]});
+  document.getElementById('rSubject').value='';
+  renderRoutines();
+});
+
+function renderRoutines(){
+  routineCount.textContent = routines.length + (routines.length===1?' task':' tasks');
+  if(routines.length===0){ emptyRoutine.style.display='block'; return; }
+  emptyRoutine.style.display='none';
+  routineList.innerHTML = routines.map(r=>`
+    <div class="flex items-center gap-4 bg-white/10 rounded-xl p-3.5 border border-white/5">
+      <div class="w-11 h-11 rounded-lg bg-${r.color}-500 flex items-center justify-center flex-shrink-0"><i class="fas fa-book-open text-white"></i></div>
+      <div class="flex-1 min-w-0">
+        <p class="font-semibold truncate">${r.subject}</p>
+        <p class="text-xs text-slate-400">${r.day} • ${formatTime(r.time)}</p>
+      </div>
+      <button onclick="removeRoutine(${r.id})" class="w-8 h-8 rounded-lg hover:bg-red-500/20 text-slate-400 hover:text-red-400 transition"><i class="fas fa-trash text-sm"></i></button>
+    </div>`).join('');
+}
+function formatTime(t){
+  if(!t) return '';
+  let [h,m]=t.split(':'); h=parseInt(h);
+  const ap=h>=12?'PM':'AM'; h=h%12||12;
+  return `${h}:${m} ${ap}`;
+}
+window.removeRoutine=(id)=>{ routines=routines.filter(r=>r.id!==id); renderRoutines(); };
+
+/* ===== AI Tutor (simulated) ===== */
+const chatBox = document.getElementById('chatBox');
+const chatInput = document.getElementById('chatInput');
+
+const aiResponses = {
+  'photosynthesis':'🌱 Photosynthesis is how plants make food! They use sunlight, water (H₂O), and carbon dioxide (CO₂) to produce glucose (sugar) and oxygen. Formula: 6CO₂ + 6H₂O + light → C₆H₁₂O₆ + 6O₂. It happens in the chloroplasts using chlorophyll.',
+  'quadratic':'📐 To solve x² - 5x + 6 = 0: Factor it → (x-2)(x-3)=0. So x = 2 or x = 3. ✅ You can verify: 2²-5(2)+6 = 4-10+6 = 0 ✓',
+  'x²':'📐 To solve x² - 5x + 6 = 0: Factor it → (x-2)(x-3)=0. So x = 2 or x = 3. ✅',
+  'stress':'🧘 Exam stress tips: 1) Make a realistic study routine (use our Routine Builder!). 2) Take short breaks every 45 min. 3) Sleep 7-8 hours. 4) Practice deep breathing. 5) Focus on understanding, not memorizing. You\'ve got this! 💪',
+  'default':'Great question! 🤔 In the full version, I analyze your question and give a detailed step-by-step explanation. For this demo, try the quick prompts above to see sample answers! You can ask me about any subject — math, science, English, ICT and more.'
+};
+
+function getAiReply(msg){
+  const m = msg.toLowerCase();
+  for(const key in aiResponses){
+    if(key!=='default' && m.includes(key)) return aiResponses[key];
+  }
+  return aiResponses.default;
+}
+
+function addMessage(text, isUser){
+  const wrap = document.createElement('div');
+  wrap.className = 'flex gap-3' + (isUser?' flex-row-reverse':'');
+  wrap.innerHTML = isUser
+    ? `<div class="w-8 h-8 bg-slate-300 rounded-full flex items-center justify-center text-slate-600 text-xs flex-shrink-0"><i class="fas fa-user"></i></div>
+       <div class="bg-brand-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 shadow-sm max-w-[80%] text-sm">${text}</div>`
+    : `<div class="w-8 h-8 gradient-brand rounded-full flex items-center justify-center text-white text-xs flex-shrink-0"><i class="fas fa-robot"></i></div>
+       <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm max-w-[80%] text-sm text-slate-700">${text}</div>`;
+  chatBox.appendChild(wrap);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+function showTyping(){
+  const t = document.createElement('div');
+  t.id='typing'; t.className='flex gap-3';
+  t.innerHTML=`<div class="w-8 h-8 gradient-brand rounded-full flex items-center justify-center text-white text-xs flex-shrink-0"><i class="fas fa-robot"></i></div>
+    <div class="bg-white rounded-2xl rounded-tl-sm px-4 py-3 shadow-sm"><div class="flex gap-1"><span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce"></span><span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.15s"></span><span class="w-2 h-2 bg-slate-400 rounded-full animate-bounce" style="animation-delay:.3s"></span></div></div>`;
+  chatBox.appendChild(t); chatBox.scrollTop=chatBox.scrollHeight;
+}
+
+function sendMessage(msg){
+  if(!msg.trim()) return;
+  addMessage(msg, true);
+  chatInput.value='';
+  showTyping();
+  setTimeout(()=>{
+    document.getElementById('typing')?.remove();
+    addMessage(getAiReply(msg), false);
+  }, 900);
+}
+
+document.getElementById('sendChat').addEventListener('click',()=>sendMessage(chatInput.value));
+chatInput.addEventListener('keydown',e=>{ if(e.key==='Enter') sendMessage(chatInput.value); });
+document.querySelectorAll('.quick-prompt').forEach(b=>{
+  b.addEventListener('click',()=>sendMessage(b.textContent));
+});
+
+/* ===== Navbar & mobile menu ===== */
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  if(window.scrollY>20) navbar.classList.add('shadow-md');
+  else navbar.classList.remove('shadow-md');
+});
+const mobileMenu = document.getElementById('mobileMenu');
+document.getElementById('menuBtn').addEventListener('click',()=>mobileMenu.classList.toggle('hidden'));
+mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mobileMenu.classList.add('hidden')));
+
+/* ===== Scroll reveal ===== */
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('show'); });
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+</script>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"4edd5f8ec12a48cfa682ab8261b80a79","server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
